@@ -1,0 +1,132 @@
+# config file for 3proxy
+# enter gateway commands line-by-line
+#
+#   log [[@]logfile] [<LOGTYPE>]
+#	sets logfile for all gateways
+#	@ - use syslog
+#	LOGTYPE is one of:
+#		M - Monthly
+#		W - Weekly
+#		D - Daily
+#		H - Hourly
+#	if logfile is not specified logging goes to stdout
+#	You can specify individual logging options for gateway by using
+#	-l option in gateway configuration.
+#
+#   rotate <n>
+#	how many archived log files to keep
+#
+#   archiver <ext> <commandline>
+#       Archiver to use for log files. <ext> is file extension produced by
+#	archiver. Filename will be last argument to archiver, optionally you
+#	can use %A as archive name and %F as filename.
+#
+#   internal <ipaddr>
+#	sets ip address of internal interface. This IP address will be used
+#	to bind gateways. Alternatively you can use -i option for individual
+#	gateways
+#
+#   external <ipaddr>
+#	sets ip address of external interface. This IP address will be source
+#	address for all connections made by proxy. Alternatively you can use
+#	-e option to specify individual address for gateway.
+#
+#    service
+#	Should be specified to launch as NT/2000/XP service, no effect for
+#	Unix.
+#
+#    daemon
+#	Should be specified to close console (needn't for service).
+#
+#    authtype
+#	Type of user authorization. Currently supported:
+#	none - no authorization required
+#	iponly - authorization by source/destination IP and ports
+#	nbname - iponly + authorization by NetBIOS name. Messanger
+#		service should be started on user's machine. Note, that
+#		Windows 95/98 hosts do not have messanger service by default,
+#		WinPopup program need to be started.
+#		NB: there is no any password check, name may be spoofed.
+#		Think about it as about ident for Windows.
+#	 Q: Will ident authorization be implemented?
+#	 A: Yes, as soon as it will be required by someone.
+#	strong - username/password authentication required (not implemented
+#	yet).
+#
+#    allow <userlist> <sourcelist> <targetlist> <targetportlist>
+#    deny <userlist> <sourcelist> <targetlist> <targetportlist>
+#	Access control entries. All lists are comma-separated, no spaces are
+#	allowed. Usernames are case sensitive (if used with authtype nbname
+#	username must be in uppercase). Source and target lists may contain
+#	IP addresses (W.X.Y.Z) or CIDRs (W.X.Y.Z/L). Targetportlist may
+#	contain ports (X) or port lists (X-Y).
+#	* sign means "ANY".
+#    	If access list is empty it's assumed to be
+#		allow *
+#    	If access list is not empty last item in access list is assumed to be
+#		deny *
+#	Access lists are checked after user have requested any resource.
+#	If you want 3proxy to reject connections from specific addresses
+#	immediately without any conditions you should either bind proxy
+#	to appropriate interface only or to use ip filters.
+#	
+#    flush
+#	empty active access list
+#
+#    setuid <uid>
+#	call setuid(uid), uid must be numeric. Unix only.
+#
+#    setgid <gid>
+#	call setgid(gid), gid must be numeric. Unix only.
+#
+#    chroot <path>
+#	call chroot(path). Unix only.
+#
+# You can include files by using $<filename> macro. For included file new line
+# character treated as space character.
+
+service
+#log /usr/local/etc/3proxy/logs/3proxy.log D
+log c:\3proxy\logs\3proxy.log D
+
+#archiver gz gzip %F
+archiver rar rar a -df -inul %A %F
+#archiver zip zip -m %A %F
+#archiver zip pkzipc -add -silent -move %A %F
+
+#keep last 30 logs
+rotate 30
+
+
+#allow ADMINISTRATOR,root
+#allow * 127.0.0.1,192.168.1.1 * *
+#allow * 192.168.1.0/24 * 80,25,110,20-21
+
+#sharing access to internet
+
+external 0.0.0.0
+internal 127.0.0.1
+#external $./external.ip
+#internal $./internal.ip
+
+proxy
+pop3p
+socks
+#tcppm 25 ns.my.provider 25
+#udppm 53 mail.my.provider 53
+
+#proxy -i127.0.0.1
+#http proxy only awaylable for localhost
+
+
+#map external 80 and 443 ports to internal Web server
+#external $./internal.ip
+#internal $./external.ip
+#tcppm 80 websrv 80
+#tcppm 443 websrv 443
+
+#chroot /usr/local/jail
+#setgid 65535
+#setuid 65535
+
+#daemon

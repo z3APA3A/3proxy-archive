@@ -1,0 +1,85 @@
+27/01/2003 3[APA3A]tiny proxy 0.4
+New features marked with !.
+
+ Features:
+  1. General
+	+ HTTP/1.1 Proxy with keep-alive client and server support,
+          transparent proxy support.
+	! FTP over HTTP support.
+	! DNS caching
+	+ HTTPS (CONNECT) proxy
+	+ SOCKSv4 Proxy
+	! SOCKSv4.5 Proxy
+	+ SOCKSv5 Proxy (TCP only)
+	+ Transparent SOCKS->HTTP redirection
+	+ POP3 Proxy
+	+ TCP port mapper
+	+ UDP port mapper
+	+ Threaded application (no child process).
+  2. Proxy chaining
+	+ Parent proxy support for any type of incoming connection
+	+ Username/password authentication for parent proxy(s).
+	+ HTTPS/SOCKS4/SOCKS5 and redirection parent support
+	+ Random parent select
+	+ Chain building (multihop proxing)
+  3. Logging
+	+ turnable log format
+	+ stdout logging
+	+ file logging
+	+ syslog logging (Unix)
+	+ ODBC logging (Windows and Unix)
+	+ log file rotation (hourly, daily, weekly, monthly)
+	+ automatic log file comperssion with external archiver (for files)
+	+ automatic removal of older log files
+  4. Access control
+	! ACL-driven (user/source/destination/protocol or combined) bandwith
+	limitation
+	! ACL-driven (user/source/destination/protocol or combined) traffic
+	limitation per day, week or month
+	+ User authorization by NetBIOS messanger name
+	+ Access control by username, source IP, destination IP, destination
+	port and destination action (POST, PUT, GET, etc).
+	+ Access control by username/password for SOCKSv5 and HTTP/HTTPS/FTP
+	+ Cleartext or encrypted (crypt/MD5 or NT) passwords.
+	+ Connection redirection
+	+ Access control by requested action (CONNECT/BIND, 
+	  HTTP GET/POST/PUT/HEAD/OTHER).
+  5. Configuration
+	+ support for configuration files
+	+ support for includes in configuration files
+	+ interface binding
+	+ running as daemon process
+	+ utility for automated networks list building
+     Unix
+	+ support for chroot
+	+ support for setgid
+	+ support for setuid
+     NT
+	+ support --install as service
+	+ support --remove as service
+	+ support for service START, STOP, PAUSE and CONTINUE commands (on
+	PAUSE no new connection accepted, but active connections still in
+	progress)
+  6. Compilation
+	+ MSVC (msvcrt.dll)
+	+ Intel Windows Compiler (msvcrt.dll)
+	+ Windows/gcc (msvcrt.dll)
+	+ Cygwin/gcc (cygwin.dll)
+	+ Unix/gcc
+	+ Unix/ccc
+
+ Known bugs:
+
+	- udppm doesn't work if compiled with cygwin. 
+
+	  Cygwin doesn't support recvfrom()/sendto() on connected socket, so
+	  recv/send is used instead... Not a big deal anyway.
+
+
+ Planned for future release:
+   - Web interface for configuration
+   - Signal handling on Unix (for stop/pause/resume/configuration change)
+   - External filter API
+   - Addon URL, antiviral, HTTP cache filters
+
+$Id: Release.notes,v 1.3 2003/01/27 11:34:15 3APA3A Exp $

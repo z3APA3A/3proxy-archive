@@ -1,0 +1,115 @@
+0.5.2 is bugfix release for 0.5.1 with many bugs fixed and very few
+functionality improvements:
+ - "monitor" command to reload configuration if monitored file changed
+ - "bandlimout" / "nobandlimout" to limit banwidth for outgoing traffic
+Comptibility warnings:
+ - traffic report file configured with 'counter' command may now contain
+   counter's comment after # sign. If you parse traffic reports with automated
+   tool, please update it.
+
+ Known bugs:
+
+  Non-reproduced problem reported with poll() implemenration for some 2.4
+  Linux kernel, may be hardware dependant. As a result 3proxy goes to a loop
+  with 100% CPU utilization soon after start. Compile 3proxy without
+  -DWITH_POLL in Makefile(s) if you observe this behaviour.
+
+  report to 3proxy@security.nnov.ru
+
+
+
+10/03/2006 3[APA3A]tiny proxy 0.5.2
+New features since 0.4 are marked with !.
+
+ Features:
+  1. General
+	+ HTTP/1.1 Proxy with keep-alive client and server support,
+          transparent proxy support.
+	! Anonymous and random client emulation HTTP proxy mode
+	+ FTP over HTTP support.
+	+ DNS caching with built-in resolver
+	+ HTTPS (CONNECT) proxy
+	+ SOCKSv4/4.5 Proxy
+	+ SOCKSv5 Proxy
+	! UDP and bind support for SOCKSv5 (fully compatible with
+	  SocksCAP/FreeCAP for UDP)
+	+ Transparent SOCKS->HTTP redirection
+	! Transparent SOCKS->FTP redirection
+	! Transparent SOCKS->POP3 redirection
+	+ POP3 Proxy
+	! FTP proxy
+	! DNS proxy
+	+ TCP port mapper
+	+ UDP port mapper
+	+ Threaded application (no child process).
+	! Web administration and statistics
+  2. Proxy chaining
+	+ Parent proxy support for any type of incoming connection
+	+ Username/password authentication for parent proxy(s).
+	+ HTTPS/SOCKS4/SOCKS5 and redirection parent support
+	+ Random parent selection
+	+ Chain building (multihop proxing)
+  3. Logging
+	+ turnable log format compatible with any log parser
+	+ stdout logging
+	+ file logging
+	+ syslog logging (Unix)
+	+ ODBC logging (Windows and Unix)
+	+ log file rotation (hourly, daily, weekly, monthly)
+	+ automatic log file comperssion with external archiver (for files)
+	+ automatic removal of older log files
+	! Character filtering for log files
+	! different log files for different servces are supported
+  4. Access control
+	+ ACL-driven (user/source/destination/protocol/weekday/daytime or
+	combined) bandwith limitation for incoming and (!)outgoing trafic.
+	+ ACL-driven (user/source/destination/protocol/weekday/daytime or
+	combined) traffic limitation per day, week or month
+	+ User authorization by NetBIOS messanger name
+	+ Access control by username, source IP, destination IP, destination
+	port and destination action (POST, PUT, GET, etc), weekday and daytime.
+	+ Access control by username/password for SOCKSv5 and HTTP/HTTPS/FTP
+	+ Cleartext or encrypted (crypt/MD5 or NT) passwords.
+	+ Connection redirection
+	+ Access control by requested action (CONNECT/BIND, 
+	  HTTP GET/POST/PUT/HEAD/OTHER).
+	! NTLM authentication for HTTP proxy access
+	! All access controle entries now support weekday and daytime
+	limitations.
+  5. Configuration
+	+ support for configuration files
+	+ support for includes in configuration files
+	+ interface binding
+	+ running as daemon process
+	+ utility for automated networks list building
+	! configuration reload on any file change
+     Unix
+	+ support for chroot
+	+ support for setgid
+	+ support for setuid
+	! support for signals
+     Windows NT/2K/XP/2K3
+	+ support --install as service
+	+ support --remove as service
+	+ support for service START, STOP, PAUSE and CONTINUE commands (on
+	PAUSE no new connection accepted, but active connections still in
+	progress, on CONTINUE configuration is reloaded)
+     Windows 95/98/ME
+	! support --install as service
+	! support --remove as service
+  6. Compilation
+	+ MSVC (msvcrt.dll)
+	+ Intel Windows Compiler (msvcrt.dll)
+	+ Windows/gcc (msvcrt.dll)
+	+ Cygwin/gcc (cygwin.dll)
+	+ Unix/gcc
+	+ Unix/ccc
+	! Solaris
+
+
+ Planned for future (0.6) release:
+   - External modules API
+   - Addon URL, antiviral, HTTP cache filters modules, authentication
+     modules for different protocols (RADIUS, PAM, integrated system, etc).
+
+$Id: Release.notes,v 1.5 2004/12/11 11:47:52 vlad Exp $

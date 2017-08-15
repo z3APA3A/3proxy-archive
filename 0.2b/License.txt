@@ -1,0 +1,51 @@
+3proxy 0.2 Public License Agreement
+
+This software provided "as is" without any guaranties or support.
+
+This software is SHAREWARE.
+
+You HAVE non-exclusive right to use this sofware for your own
+needs or inside your organization.
+
+You MAY NOT use this software to serve any third party.
+
+You MAY make changes in this software for your needs or internal needs of
+your organization.
+
+You MAY redistribute this software ONLY if you satisfy 4 rules below:
+ 1. You MUST redistribute this software package "as is" without any
+ modifications.
+ Only modifications allowed are changes to source code to make software
+ compile on some specific hardware platform and/or operation systems. This
+ kind of modification MUST be clearly documented in Readme file distributed
+ with program. You MAY add your own information to Readme document but you
+ MAY NOT modify or remove original information from Readme document.
+ 2. You MUST include ALL files from original distribution. You MAY
+ redistribute compiled source code, in this case you MUST provide this
+ file with Public License Agreement unmodified and Readme document with
+ a link to source code location.
+ 3. You MAY NOT redistribute this software as a part of any commercial
+ product.
+ 4. You MAY NOT redistribute this software as a part of any commercial
+ service. It means, if you want to setup this software to any third party
+ you must you can not do it for money or as a "free bonus" in addition
+ to any commercial service.
+
+In order to get same software with different License please contact
+3APA3A@security.nnov.ru.
+
+Any official response from 3APA3A@security.nnov.ru will be signed with
+PGP key  published at http://www.security.nnov.ru/3APA3A.asc
+
+The text of this Public License Agreement is subject to change in future
+releases of this software.
+
+(c)	2002 by 3APA3A.
+	3APA3A@security.nnov.ru
+	http://www.security.nnov.ru
+
+This software uses:
+  RSA Data Security, Inc. MD4 Message-Digest Algorithm
+  RSA Data Security, Inc. MD5 Message-Digest Algorithm
+
+$Id: License,v 2.0.1.1 2002/11/06 14:25:01 3APA3A Exp $

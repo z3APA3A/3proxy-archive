@@ -1,0 +1,72 @@
+06/09/2002 3[APA3A]tiny proxy 0.2b Initial release.
+
+ Features:
+  1. General
+	+ HTTP/1.1 Proxy with keep-alive client and server support,
+          transparent proxy support.
+	+ SOCKSv4 Proxy
+	+ SOCKSv5 Proxy (TCP only)
+	+ POP3 Proxy
+	+ TCP port mapper
+	+ UDP port mapper
+	+ Threaded application (no child process).
+  2. Logging
+	+ stdout logging
+	+ file logging
+	+ syslog logging (Unix)
+	+ log file rotation (hourly, daily, weekly, monthly)
+	+ automatic log file comperssion with external archiver (for files)
+	+ automatic removal of older log files
+  3. Access control
+	+ User authorization by NetBIOS messanger name
+	+ Access control by username, source IP, destination IP and destination
+	port
+	+ Access control by username/password for SOCKSv5 and HTTP
+	+ Cleartext or encrypted (crypt/MD5 or NT) passwords.
+  4. Configuration
+	+ support for configuration files
+	+ support for includes in configuration files
+	+ interface binding
+	+ running as daemon process
+     Unix
+	+ support for chroot
+	+ support for setgid
+	+ support for setuid
+     NT
+	+ support --install as service
+	+ support --remove as service
+	+ support for service START, STOP, PAUSE and CONTINUE commands (on
+	PAUSE no new connection accepted, but active connections still in
+	progress)
+  5. Compilation
+	+ Microsoft VC++ (msvcrt.dll)
+	+ Windows/gcc (msvcrt.dll)
+	+ Cygwin/gcc (cygwin.dll)
+	+ Unix/gcc
+
+ Known bugs:
+
+	- udppm doesn't work if compiled with cygwin. 
+
+	  Cygwin doesn't support recvfrom()/sendto() on connected socket, so
+	  recv/send is used instead... Not a big deal anyway.
+
+	- udppm works without authentication
+
+	  Will be patched later.
+
+	- socks5 doesn't work with UDP
+
+	  Not implemented yet
+
+ Planned for future release:
+   - Improvements to UDP portmapping
+   - UDP implementation in SOCKSv5
+   - Ident authorization
+   - SOCKSv5 password authentication
+   - Signal handling on Unix (for pause/resume)
+   - External filter API
+   - Addon trafficshape, URL, antiviral, HTTP cache filters
+   - HTTP/1.1 support
+
+$Id: Release.notes,v 2.0.1.1 2002/11/06 14:25:02 3APA3A Exp $

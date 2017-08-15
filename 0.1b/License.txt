@@ -1,0 +1,38 @@
+3proxy 0.1 Public License Agreement
+
+This software provided "as is" without any guaranties or support.
+
+You're granted non-exclusive right to use this software.
+
+You can redistribute downloaded package without making modification in it
+via Internet for free.
+You can compile this software and redistribute compiled code via Internet
+without modification for free.
+
+Redistribution of this software or it parts is prohibited if functionality
+of this software is changed.
+
+Redistribution of this software on CD, DVD or other media without permission
+from author is prohibited.
+
+Redistribution of this software as a part of any commercial service without
+permission from author is prohibited.
+
+Use of this software to serve third parties prohibited.
+
+Redistribution of this software or it's parts on any media or in commercial
+package or as a part of any pre-compiled package or use of this software to
+provide commercial service requires permission from
+3APA3A@security.nnov.ru signed with PGP key 
+http://www.security.nnov.ru/3APA3A.asc
+
+This License Agreement is subject to change in future releases of this
+software.
+
+(c)	2002 by 3APA3A.
+	3APA3A@security.nnov.ru
+	http://www.security.nnov.ru
+
+
+
+

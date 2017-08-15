@@ -1,0 +1,231 @@
+#
+# config file for 3proxy
+# enter gateway commands line-by-line
+#
+#   log [[@]logfile] [<LOGTYPE>]
+#	sets logfile for all gateways
+#	@ - use syslog
+#	LOGTYPE is one of:
+#		M - Monthly
+#		W - Weekly
+#		D - Daily
+#		H - Hourly
+#	if logfile is not specified logging goes to stdout
+#	You can specify individual logging options for gateway by using
+#	-l option in gateway configuration.
+#
+#   rotate <n>
+#	how many archived log files to keep
+#
+#   archiver <ext> <commandline>
+#       Archiver to use for log files. <ext> is file extension produced by
+#	archiver. Filename will be last argument to archiver, optionally you
+#	can use %A as archive name and %F as filename.
+#
+#   internal <ipaddr>
+#	sets ip address of internal interface. This IP address will be used
+#	to bind gateways. Alternatively you can use -i option for individual
+#	gateways
+#
+#   external <ipaddr>
+#	sets ip address of external interface. This IP address will be source
+#	address for all connections made by proxy. Alternatively you can use
+#	-e option to specify individual address for gateway.
+#
+#    service
+#	Should be specified to launch as NT/2000/XP service, no effect for
+#	Unix.
+#
+#    daemon
+#	Should be specified to close console (needn't for service).
+#
+#    auth
+#	Type of user authorization. Currently supported:
+#	none - no authorization required
+#	iponly - authorization by source/destination IP and ports
+#	nbname - iponly + authorization by NetBIOS name. Messanger
+#		service should be started on user's machine. Note, that
+#		Windows 95/98 hosts do not have messanger service by default,
+#		WinPopup program need to be started.
+#		NB: there is no any password check, name may be spoofed.
+#		Think about it as about ident for Windows.
+#	 Q: Will ident authorization be implemented?
+#	 A: Yes, as soon as it will be required by someone.
+#	strong - username/password authentication required. It will work only
+#		 with SOCKSv5 and HTTP proxy.
+#
+#    allow <userlist> <sourcelist> <targetlist> <targetportlist>
+#    deny <userlist> <sourcelist> <targetlist> <targetportlist>
+#    redirect redirect_ip redirect_port <userlist> <sourcelist> <targetlist> <targetportlist>
+#	Access control entries. All lists are comma-separated, no spaces are
+#	allowed. Usernames are case sensitive (if used with authtype nbname
+#	username must be in uppercase). Source and target lists may contain
+#	IP addresses (W.X.Y.Z) or CIDRs (W.X.Y.Z/L). Targetportlist may
+#	contain ports (X) or port lists (X-Y).
+#	* sign means "ANY".
+#    	If access list is empty it's assumed to be
+#		allow *
+#    	If access list is not empty last item in access list is assumed to be
+#		deny *
+#	Access lists are checked after user have requested any resource.
+#	If you want 3proxy to reject connections from specific addresses
+#	immediately without any conditions you should either bind proxy
+#	to appropriate interface only or to use ip filters.
+#	Redirect causes connection to be accepted, but outgoing connection
+#	to be redirected to different ip/port if user's connection matches
+#	to rule.
+#	For example
+#		redirect 192.168.1.2 80 * * * 80
+#	causes all outgoing web traffic to be redirected to 192.168.1.2 web
+#	server
+#	
+#    users username[:pwtype:password] ...
+#	pwtype is one of:
+#		none (empty) - use system authentication
+#		CL - password is cleartext
+#		CR - password is crypt-style password
+#		NT - password is NT password (in hex)
+#	example:
+# users test1:CL:password1 "test2:CR:$1$lFDGlder$pLRb4cU2D7GAT58YQvY49." test3:NT:BD7DFBF29A93F93C63CB84790DA00E63
+#	
+#
+#    flush
+#	empty active access list
+#
+#    system
+#	execute system command
+#
+#    setuid <uid>
+#	call setuid(uid), uid must be numeric. Unix only.
+#
+#    setgid <gid>
+#	call setgid(gid), gid must be numeric. Unix only.
+#
+#    chroot <path>
+#	call chroot(path). Unix only.
+#
+# You can include files by using $<filename> macro. For included file new line
+# character treated as space character.
+
+
+#system "echo Hello world!"
+# you may use system to execute some external command if proxy starts
+
+users 3APA3A:CL:3apa3a "test:CR:$1$qwer$CHFTUFGqkjue9HyhcMHEe1"
+# note that "" required, overvise $... is treated as include file name.
+# $1$qwer$CHFTUFGqkjue9HyhcMHEe1 is 'test' in MD5 crypt format.
+#users @/usr/local/etc/3proxy/passwd
+# this example shows you how to include passwd file. For included files
+# <CR> and <LF> are treated as field separators.
+
+service
+# service is required under NT if you want 3proxy to start as service
+
+
+#log /usr/local/etc/3proxy/logs/3proxy.log D
+log c:\3proxy\logs\3proxy.log D
+# log allows to specify log file location and rotation, D means logfile
+# is created daily
+
+#archiver gz /bin/gzip %F
+#archiver zip zip -m %A %F
+#archiver zip pkzipc -add -silent -move %A %F
+archiver rar rar a -df -inul %A %F
+# if archiver specified log file will be compressed after closing.
+# you should specify extension, path to archiver and command line, %A will be
+# substituted with archive file name, %f - with original file name.
+# Original file will not be removed, so archiver should care about it.
+
+rotate 30
+# We will keep last 30 log files
+
+auth iponly
+#auth nbname
+#auth strong
+# auth specifies type of user authentication. If you specify none proxy
+# will not do anything to check name of the user. If you specify
+# nbname proxy will send NetBIOS name request packet to UDP/137 of
+# client and parse request for NetBIOS name of messanger service.
+# Strong means that proxy will check password. For strong authentication
+# unknown user will not be allowed to use proxy regardless of ACL.
+# If you do not want username to be checked but wanna ACL to work you should
+# specify auth iponly.
+
+
+#allow ADMINISTRATOR,root
+#allow * 127.0.0.1,192.168.1.1 * *
+#redirect 192.168.1.2 80 * * * 80
+#allow * 192.168.1.0/24 * 25,53,110,20-21,1024-65535
+# we will allow everything if username matches ADMINISTRATOR or root or
+# client ip is 127.0.0.1 or 192.168.1.1. Overwise we will redirect any request
+# to port 80 to our Web-server 192.168.0.2.
+# We will allow any outgoing connections from network 192.168.1.0/24 to
+# SMTP, POP3, FTP, DNS and unprivileged ports.
+# Note, that redirect may also be used with proxy or portmapper. It will
+# allow you to redirect requests to different ports or different server
+# for different clients.
+
+#  sharing access to internet
+
+external 0.0.0.0
+# external is address 3proxy uses for outgoing connections. 0.0.0.0 means any
+# interface. Using 0.0.0.0 is not good because it allows to connect to 127.0.0.1
+
+internal 127.0.0.1
+# internal is address of interface proxy will listen for incoming requests
+# 127.0.0.1 means only localhost will be able to use this proxy. This is
+# address you should specify for clients as proxy IP.
+# You MAY use 0.0.0.0 but you shouldn't, because it's a chance for you to
+# have open proxy in your network in this case.
+
+#external $./external.ip
+#internal $./internal.ip
+# this is just an alternative form fo giving external and internal address
+# allows you to read this addresses from files
+
+proxy
+pop3p
+# Now we starting HTTP and POP3 proxy with settings above
+
+#tcppm 25 ns.my.provider 25
+#udppm -s 53 mail.my.provider 53
+# we can portmap port TCP/25 to provider's SMTP server and UDP/53
+# to provider's DNS.
+# Now we can use our proxy as SMTP and DNS server.
+# -s switch for UDP means "single packet" service - instead of setting
+# association for period of time association will only be set for 1 packet.
+# It's very userfull for services like DNS but not for some massive services
+# like multimedia streams or online games.
+
+auth strong
+fflush
+allow 3APA3A,test
+socks
+# for socks we will use password authentication and different access control -
+# we flush previously configured ACL list and create new one to allow users
+# test and 3APA3A to connect from any location
+
+
+
+# map external 80 and 443 ports to internal Web server
+# examples below show how to use 3proxy to publish Web server in internal
+# network to Internet. We must switch internal and external addresses and
+# flush any ACLs
+
+#auth none
+#flush
+#external $./internal.ip
+#internal $./external.ip
+#tcppm 80 websrv 80
+#tcppm 443 websrv 443
+
+#chroot /usr/local/jail
+#setgid 65535
+#setuid 65535
+# now we needn't any root rights. We can chroot and setgid/setuid.
+
+#daemon
+# now we will not depend on any console (daemonize).
+
+
+###$Id: 3proxy.cfg.sample,v 2.0.1.2 2002/11/10 18:14:07 3APA3A Exp $#######
